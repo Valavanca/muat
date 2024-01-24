@@ -314,6 +314,8 @@ def translate_args(args):
     return args
 
 def simplified_args(args):
+    """? 
+    """
 
     if args.motif:
         args.arch = 'MuAtMotifF'
@@ -338,6 +340,8 @@ def simplified_args(args):
     return args
 
 def solving_arch(args):
+    """Workaround for the old model name
+    """
     if args.arch == 'MuAtPlainF':
         args.arch = 'MuAtPlain'
     if args.arch == 'TripletPositionF':

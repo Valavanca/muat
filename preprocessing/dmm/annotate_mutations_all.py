@@ -928,7 +928,7 @@ def func_annotate_mutation_all(args):
 
             #gc content
             '''
-            syntax_gc = 'python3 preprocessing/dmm/annotate_mutations_with_gc_content.py \
+            syntax_gc = 'python preprocessing/dmm/annotate_mutations_with_gc_content.py \
             -i ' + args.tmp_dir + only_input_filename + '.tsv.gz \
             -o ' + args.tmp_dir + only_input_filename + '.gc.tsv.gz \
             -n 1001 \
@@ -1042,7 +1042,7 @@ def func_annotate_mutation_all(args):
             pd_sort.to_csv(output_exon,sep='\t',index=False, compression="gzip")
 
             '''
-            syntax_geneorientation = 'python3 preprocessing/dmm/annotate_mutations_with_coding_strand.py \
+            syntax_geneorientation = 'python preprocessing/dmm/annotate_mutations_with_coding_strand.py \
             -i '+ args.tmp_dir + only_input_filename + '.gc.genic.exonic.tsv.gz \
             -o '+ args.tmp_dir + only_input_filename + '.gc.genic.exonic.cs.tsv.gz \
             --annotation ' + args.genomic_tracks + 'Homo_sapiens.GRCh37.87.transcript_directionality.bed.gz \

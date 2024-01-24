@@ -8,7 +8,7 @@ import argparse
 '''
 how to run
 ex:
-python3 /users/primasan/projects/muat/preprocessing/notebook/tcga/tcga_create_epigen_data_slurm.py --class-name 'HNSC' --sample-file 'TCGA-CN-4739-01A-02D-1512-08.csv' --muat-dir '/users/primasan/projects/muat/' --epigen-file '/scratch/project_2001668/data/pcawg/allclasses/epigenetic_token.tsv' --simplified-dir '/scratch/project_2001668/data/pcawg/allclasses/simplified_data/' --tokenized-dir '/scratch/project_2001668/data/pcawg/allclasses/tokenized_data/'
+python /users/primasan/projects/muat/preprocessing/notebook/tcga/tcga_create_epigen_data_slurm.py --class-name 'HNSC' --sample-file 'TCGA-CN-4739-01A-02D-1512-08.csv' --muat-dir '/users/primasan/projects/muat/' --epigen-file '/scratch/project_2001668/data/pcawg/allclasses/epigenetic_token.tsv' --simplified-dir '/scratch/project_2001668/data/pcawg/allclasses/simplified_data/' --tokenized-dir '/scratch/project_2001668/data/pcawg/allclasses/tokenized_data/'
 '''
 
 def get_args():

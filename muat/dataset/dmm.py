@@ -6,7 +6,7 @@ import sys, os, argparse, random, json, tempfile
 import numpy as np
 
 from common import *
-#import model
+import model
 
 DEFAULTS_JSON = os.path.join(os.path.abspath(os.path.dirname(__file__)), DEFAULT_PARAMETERS_NAME)
 if os.path.exists(DEFAULTS_JSON) == False:

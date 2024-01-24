@@ -901,7 +901,7 @@ def func_annotate_mutation_all_modified(args):
             
             #gc content
             '''
-            syntax_gc = 'python3 preprocessing/dmm/annotate_mutations_with_gc_content.py \
+            syntax_gc = 'python preprocessing/dmm/annotate_mutations_with_gc_content.py \
             -i ' + args.tmp_dir + only_input_filename + '.tsv.gz \
             -o ' + args.tmp_dir + only_input_filename + '.gc.tsv.gz \
             -n 1001 \

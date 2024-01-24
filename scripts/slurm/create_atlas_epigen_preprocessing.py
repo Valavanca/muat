@@ -18,7 +18,7 @@ for i in range(0,len(all_class)):
     for j in range(0,len(all_samples)):
 
             string ="#!/bin/bash\n#SBATCH --partition=cpu \n#SBATCH --ntasks=1\n#SBATCH --cpus-per-task=1\n#SBATCH --nodelist=a[0-2,5-7]\n#SBATCH --mem=30G\n#SBATCH --time=08:00:00\n#SBATCH --output=/csc/epitkane/projects/litegpt/.out/R-%x.%j.out\n#SBATCH --error=/csc/epitkane/projects/litegpt/.out/R-%x.%j.err\n\n" 
-            command = f"srun python3 /csc/epitkane/projects/muat/preprocessing/notebook/epigenetics/create_epigen_data_slurm.py --class-name '{pcawg_histology}' --sample-file '{all_samples[j]}'"
+            command = f"srun python /csc/epitkane/projects/muat/preprocessing/notebook/epigenetics/create_epigen_data_slurm.py --class-name '{pcawg_histology}' --sample-file '{all_samples[j]}'"
 
             string_logs = pcawg_histology + all_samples[j]
 

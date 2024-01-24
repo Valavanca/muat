@@ -66,7 +66,10 @@ def annotate_mutations_with_gc_content(
         label='gc'
     ):
     """
-    Function to annotate mutations with GC content.
+    Function to annotate mutations with guanine-cytosine content(GC) content. \
+    GC-content is the percentage of nitrogenous bases in a DNA or RNA molecule \
+    that are either guanine (G) or cytosine (C).
+    Original code is `preprocessing/dmm/annotate_mutations_with_gc_content.py`.
 
     Args:
         input_file (str): Path to the input file.
@@ -174,4 +177,10 @@ def determine_strand(row, reference):
 
 
 if __name__ == '__main__':
-    fire.Fire(annotate_mutations_with_gc_content)
+    fire.Fire(
+        {
+            'annotate_mutations_with_gc_content': annotate_mutations_with_gc_content,
+            'annotate_mutations_with_bed': annotate_mutations_with_bed,
+            'annotate_with_coding_strand': annotate_with_coding_strand
+        }
+    )

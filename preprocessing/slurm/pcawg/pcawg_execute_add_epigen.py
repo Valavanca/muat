@@ -18,7 +18,7 @@ for i in range(len(pd_allsamples)):
         count = count + 1
         if count < 250:
             string ="#!/bin/bash\n#SBATCH --account=project_2001668\n#SBATCH --partition=small\n#SBATCH --ntasks=1\n#SBATCH --cpus-per-task=1\n#SBATCH --mem=64G\n#SBATCH --time=72:00:00\n#SBATCH --output=/scratch/project_2001668/primasan/.out/R-%x.%j.out\n#SBATCH --error=/scratch/project_2001668/primasan/.out/R-%x.%j.err\n\n" 
-            command = f"srun python3 /users/primasan/projects/muat/preprocessing/notebook/pcawg/pcawg_create_epigen_data_slurm.py --class-name '{pcawg_histology}' --sample-file '{samp}' --muat-dir '/users/primasan/projects/muat/' --epigen-file '/scratch/project_2001668/data/pcawg/allclasses/epigenetic_token.tsv' --simplified-dir '/scratch/project_2001668/data/pcawg/allclasses/simplified/' --tokenized-dir '/scratch/project_2001668/data/pcawg/allclasses/tokenized/'"
+            command = f"srun python /users/primasan/projects/muat/preprocessing/notebook/pcawg/pcawg_create_epigen_data_slurm.py --class-name '{pcawg_histology}' --sample-file '{samp}' --muat-dir '/users/primasan/projects/muat/' --epigen-file '/scratch/project_2001668/data/pcawg/allclasses/epigenetic_token.tsv' --simplified-dir '/scratch/project_2001668/data/pcawg/allclasses/simplified/' --tokenized-dir '/scratch/project_2001668/data/pcawg/allclasses/tokenized/'"
             string_logs = pcawg_histology + samp
 
             completeName = "/users/primasan/projects/muat/pcawgepigen_" + string_logs +".sh"

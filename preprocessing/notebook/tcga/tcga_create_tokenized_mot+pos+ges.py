@@ -24,7 +24,7 @@ def get_args():
 
 if __name__ == '__main__':
 
-    args = get_args(args)
+    args = get_args()
 
     #edit the directory
     muat_dir = '/users/primasan/projects/muat/'

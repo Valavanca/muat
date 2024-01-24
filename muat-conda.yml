@@ -18,9 +18,9 @@ dependencies:
   - scikit-learn
   - tensorboardx
   - seaborn
-  - bedops
+  - bedops # OK
   - gzip
-  - perl-io-uncompress-gunzip
+  - perl-io-uncompress-gunzip # OK
   - pyliftover
-  - pyvcf
+  - pyvcf # old: ERROR --> Done
   - natsort

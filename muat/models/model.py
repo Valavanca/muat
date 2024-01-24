@@ -1,12 +1,10 @@
 import math
-import logging
 
+from loguru import logger
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
 import pdb
-
-logger = logging.getLogger(__name__)
 
 class ModelConfig:
     """ base GPT config, params common to all GPT versions """
@@ -34,7 +32,7 @@ class Block(nn.Module):
         super().__init__()
         self.ln1 = nn.LayerNorm(config.n_embd)
         self.ln2 = nn.LayerNorm(config.n_embd)
-        self.attn = CausalSelfAttention(config)
+        self.attn = CausalSelfAttention(config) #TODO: https://pytorch.org/tutorials/intermediate/scaled_dot_product_attention_tutorial.html#causal-self-attention
         self.mlp = nn.Sequential(
             nn.Linear(config.n_embd, 4 * config.n_embd),
             nn.GELU(),
@@ -141,21 +139,17 @@ class EmbFCMean(nn.Module):
     """
     def __init__(self, config):
         super().__init__()
-
         self.num_tokens, self.max_pool = config.vocab_size, False
-
         self.token_embedding = nn.Embedding(config.vocab_size, config.n_embd)
-
-        self.fcemb = nn.Sequential(nn.Linear(config.block_size, config.n_embd),
-                                   nn.ReLU(),
-                                   nn.Linear(config.n_embd, config.n_embd),
-                                   nn.ReLU(),
-                                   nn.Linear(config.n_embd, 1),
-                                   nn.ReLU(),
-                                   )
-
+        self.fcemb = nn.Sequential(
+            nn.Linear(config.block_size, config.n_embd),
+            nn.ReLU(),
+            nn.Linear(config.n_embd, config.n_embd),
+            nn.ReLU(),
+            nn.Linear(config.n_embd, 1),
+            nn.ReLU()
+        )
         self.toprobs = nn.Linear(config.n_embd, config.num_class)
-
         self.do = nn.Dropout(config.embd_pdrop)
 
     def forward(self, x,targets=None,vis=None):

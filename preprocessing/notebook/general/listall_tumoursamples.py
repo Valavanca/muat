@@ -8,7 +8,7 @@ import argparse
 '''
 how to use
 ex:
-python3 /users/primasan/projects/muat/preprocessing/notebook/tcga/tcga_create_simplified_data.py --muat-dir '/users/primasan/projects/muat/' --tcga-dir '/scratch/project_2001668/data/tcga/alltcga/' --simplified-dir '/scratch/project_2001668/data/tcga/simplified/'
+python /users/primasan/projects/muat/preprocessing/notebook/tcga/tcga_create_simplified_data.py --muat-dir '/users/primasan/projects/muat/' --tcga-dir '/scratch/project_2001668/data/tcga/alltcga/' --simplified-dir '/scratch/project_2001668/data/tcga/simplified/'
 
 '''
 

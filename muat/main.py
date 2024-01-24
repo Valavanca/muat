@@ -1,50 +1,53 @@
-# make deterministic
-from models.utils import set_seed
-set_seed(42)
-#frompc
+import argparse
+import math
+import os
+import pdb
+import sys
+from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
-import math
-from pathlib import Path
-from loguru import logger
 from torch.utils.data import Dataset
+from loguru import logger
 
-from models.model import *
-
-from models.trainer import *
-from models.predict import *
-
-from models.utils import sample
-
-import logging
-logging.basicConfig(
-        format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
-        datefmt="%m/%d/%Y %H:%M:%S",
-        level=logging.INFO,
+from models.model import ModelConfig
+from models.trainer import TrainerConfig, Trainer
+from models.predict import PredictorConfig, Predictor
+from models.utils import (
+    set_seed,
+    sample,
+    fix_path,
+    update_args,
+    simplified_args,
+    translate_args,
+    solving_arch,
+    get_simplified_dataloader,
+    get_model
 )
-import pdb
 
-from dataset.pcawgtcga_dataloader import TCGAPCAWG_Dataloader
-from dataset.singlepredictvcf import SinglePredictVCF
-from dataset.predictfolder_dataset import *
+#from dataset.pcawg_tcga_dataloader import TCGA_PCAWG_Dataloader
+#from dataset.singlepredictvcf import SinglePredictVCF
+# from dataset.predictfolder_dataset import *
 
-from preprocessing.dmm.dmm import *
-from preprocessing.fromvcffiles import *
-from preprocessing.dmm.preprocess3 import *
-from preprocessing.dmm.annotate_mutations_all import *
-from preprocessing.dmm.annotate_mutations_all_modified import *
+# from preprocessing.dmm.dmm import *
+# from preprocessing.fromvcffiles import *
+# from preprocessing.dmm.preprocess3 import *
+# from preprocessing.dmm.annotate_mutations_all import *
+# from preprocessing.dmm.annotate_mutations_all_modified import *
 
-from models.utils import *
+from preprocessing.mutation_annotation import (
+    annotate_mutations_with_gc_content,
+    annotate_mutations_with_bed,
+    annotate_with_coding_strand,
+)
 
-import argparse
-import os
-import pandas as pd
+set_seed(42)
 
-
-from preprocessing.mutation_annotation import annotate_mutations_with_gc_content, annotate_mutations_with_bed
+logger.remove()
+logger.add(sys.stderr, format="{time} - {level} - {message}", level="INFO")
 
 
 def get_args():
@@ -241,9 +244,6 @@ def get_args():
     args = parser.parse_args()
     return args
 
-
-
-# TODO
 def execute_annotation(args, only_input_filename):
 
     tmp_dir = Path(args.tmp_dir)
@@ -313,10 +313,19 @@ def execute_annotation(args, only_input_filename):
     # Annotate dataset with gene orientation information
     # Replace this with an equivalent Python function if available
     # Otherwise, you can continue using subprocess as before
-    gene_orientation_script = 'preprocessing/dmm/annotate_mutations_with_coding_strand.py' #TODO
-    syntax_geneorientation = f'python {gene_orientation_script} -i {output_exonic_file} -o {tmp_dir / f"{only_input_filename}.gc.genic.exonic.cs.tsv.gz"} --annotation {genomic_tracks_dir / "Homo_sapiens.GRCh37.87.transcript_directionality.bed.gz"} --ref {args.reference}'
-    subprocess.run(syntax_geneorientation, shell=True)  # TODO
-    output_exonic_file.unlink()
+    # Annotate dataset with gene orientation information
+    input_exonic_file = tmp_dir / f'{only_input_filename}.gc.genic.exonic.tsv.gz'
+    output_coding_strand_file = tmp_dir / f'{only_input_filename}.gc.genic.exonic.cs.tsv.gz'
+    annotation_file = genomic_tracks_dir / 'Homo_sapiens.GRCh37.87.transcript_directionality.bed.gz'
+
+    annotate_with_coding_strand(
+        input_file=str(input_exonic_file),
+        output_file=str(output_coding_strand_file),
+        annotation_file=str(annotation_file),
+        reference_file=args.reference
+    )
+
+    input_exonic_file.unlink()
     
 
 if __name__ == '__main__':
@@ -606,9 +615,6 @@ if __name__ == '__main__':
         
 
         if args.multi_pred_vcf:
-
-            #get all vcf files
-            
             vcffiles = os.listdir(args.input_data_dir)
             vcffiles = [i for i in vcffiles if i[-4:] =='.vcf']
 
@@ -653,8 +659,6 @@ if __name__ == '__main__':
                                 ges_size = validation_dataset.ges_size,
                                 context_length=args.context_length,
                                 args=args)
-
-            #pdb.set_trace()
 
             model = get_model(args,mconf)
 
